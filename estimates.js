@@ -16,8 +16,10 @@ setInterval(function() {
 				return; // continue each() loop
 			}
 			// get title without any HTML children
-			let cardTitle = cardTitleDiv.textContent;
+			const cardOrigTitle = cardTitleDiv.textContent;
+			let cardTitle = cardOrigTitle;
 			const regexp = new RegExp(/(\(\s*([^)]+)\s*\)|\[\s*([^\]]+)\s*])/, 'g');
+			//const regexp = new RegExp(/(\(\s*([^)]+)\s*\)|\[\s*([^\]]+)\s*]|\{\s*([^}]+)\s*})/, 'g');
 			regexp.lastIndex = 0;
 			let matchResult = regexp.exec(cardTitle);
 			let extraRowSpans = [];
@@ -60,6 +62,26 @@ setInterval(function() {
 				matchResult = regexp.exec(cardTitle);
 				++i;
 			}
+
+			const regexp2 = new RegExp(/(\{\s*([^}]+)\s*})/, 'g');
+			let matchResult2 = regexp2.exec(cardTitle);
+			if (matchResult2 !== null){
+				cardTitle = cardTitle.slice(0, matchResult2.index) + cardTitle.slice(matchResult2.index + matchResult2[2].length + 2);
+				typeContent = "label-primary"
+				if (typeContent) {
+					let newRowSpan = document.createElement("span");
+					newRowSpan.classList.add("bootstrap-iso");
+					newRowSpan.style.margin = "3px";
+					let newLabel = document.createElement("span");
+					newLabel.classList.add("label");
+					newLabel.classList.add(typeContent);
+					newLabel.setAttribute("data-value", matchResult2[2]);
+					newLabel.textContent = matchResult2[2];
+					newRowSpan.appendChild(newLabel);
+					extraRowSpans.push(newRowSpan);
+				}
+			}
+
 
 			if(extraRowSpans.length > 0) {
 				let extraRow = card.querySelector(".extraRow");
