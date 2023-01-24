@@ -13,3 +13,5 @@ The original estimation will be given as number in round brackets as part of the
 The plugin sums up all original (remaining) estimations for all cards of a column, and displays the sum as part of the column's title.
 
 More technically speaking, the plugin parses the title for all cards on the board. Text content between parentheses will be removed from the title and added as a label at the bottom of each card. The same is true for content between square brackets. If content can be parsed as a float value, it will contribute to a sum.
+
+For Created date display, use {2023-01-24}
